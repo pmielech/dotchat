@@ -7,44 +7,51 @@ import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import ChatRoom from './components/chatroom';
 
 function App() {
-  const[conn, setConnection] = useState();
-  const[messages, setMess] = useState([]);
+  const [conn, setConnection] = useState();
+  const [messages, setMess] = useState([]);
 
 
-  const joinChatRoom = async ({username, chatname}) => {
+  const joinChatRoom = async ({ username, chatname }) => {
     try {
       // start connection
       // console.log("chatname: ", chatname)
       const conn = new HubConnectionBuilder()
-                .withUrl('http://localhost:5010/chat')
-                .configureLogging(LogLevel.Information).build();
+        .withUrl('http://localhost:5010/chat')
+        .configureLogging(LogLevel.Information).build();
 
       conn.on("JoinGroup", (username, msg) => {
         console.log("msg: ", msg)
-       
-        setMess(messages => [...messages, {username, msg}]);
+
+        setMess(messages => [...messages, { username, msg }]);
       });
       // console.log("append message")
-      
+
       conn.on("ReceiveSpecificMessage", (username, msg) => {
         //appending the mess
-          console.log(`${username}: ${msg}`);
+        console.log(`${username}: ${msg}`);
 
-          setMess(messages => [...messages, {username, msg}]);
+        setMess(messages => [...messages, { username, msg }]);
       })
 
       await conn.start();
       // console.log(chatname)
-      await conn.invoke("JoinGroup", {username, chatname});
+      await conn.invoke("JoinGroup", { username, chatname });
 
 
       setConnection(conn);
-    } catch(e){
+    } catch (e) {
       console.log("Exception:", e);
 
     }
   }
 
+  const sendMessage = async (message) => {
+    try {
+      await conn.invoke("SendMessage", message);
+    } catch (e) {
+      console.log(e);
+    }
+  }
   return (
     <div >
       <main>
@@ -52,14 +59,14 @@ function App() {
           <Row class="px-5 my-5">
             <Col sm='12'>
               <h1 className='font-weight-bold'>Welcome to dotchat!</h1>
-             </Col>
+            </Col>
           </Row>
-          { !conn
-            ? <Lobby joinChatRoom={joinChatRoom}/>
-            : <ChatRoom messages={messages}></ChatRoom>
+          {!conn
+            ? <Lobby joinChatRoom={joinChatRoom} />
+            : <ChatRoom messages={messages} sendMessage={sendMessage} ></ChatRoom>
 
           }
-          
+
         </Container>
 
       </main>
