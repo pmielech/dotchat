@@ -1,40 +1,38 @@
 import { Col, Container, Row } from 'react-bootstrap';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Lobby from './components/lobby';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import ChatRoom from './components/chatroom';
+import Message from './models/message.js';
+import getTime from './utilities/utilities.js';
+
 
 function App() {
   const [conn, setConnection] = useState();
   const [messages, setMess] = useState([]);
 
-
   const joinChatRoom = async ({ username, chatname }) => {
     try {
       // start connection
-      // console.log("chatname: ", chatname)
       const conn = new HubConnectionBuilder()
         .withUrl('http://localhost:5010/chat')
         .configureLogging(LogLevel.Information).build();
 
       conn.on("JoinGroup", (username, msg) => {
-        console.log("msg: ", msg)
-
-        setMess(messages => [...messages, { username, msg }]);
+        const [formatted_time, timestamp] = getTime();
+        const mess = new Message(username, msg, timestamp, formatted_time);
+        setMess(messages => [...messages, mess]);
       });
-      // console.log("append message")
 
       conn.on("ReceiveSpecificMessage", (username, msg) => {
-        //appending the mess
-        console.log(`${username}: ${msg}`);
-
-        setMess(messages => [...messages, { username, msg }]);
+        const [formatted_time, timestamp] = getTime();
+        const mess = new Message(username, msg, timestamp, formatted_time);
+        setMess(messages => [...messages, mess]);
       })
 
       await conn.start();
-      // console.log(chatname)
       await conn.invoke("JoinGroup", { username, chatname });
 
 
@@ -52,6 +50,9 @@ function App() {
       console.log(e);
     }
   }
+  useEffect(() => {
+    console.log(messages);
+  }, [messages]);
   return (
     <div >
       <main>
@@ -68,9 +69,9 @@ function App() {
           }
 
         </Container>
-
       </main>
     </div>
+
   );
 }
 

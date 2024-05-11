@@ -15,7 +15,9 @@ const ChatRoom = ({ messages, sendMessage }) => <div>
   </Row>
   <Row className="px-5 py-5">
     <Col sm={12} >
-      <MessageContainter messages={messages} />
+      <>
+        <MessageContainter messages={messages} />
+      </>
     </Col>
     <Col sm={12} >
       <SendMessageForm sendMessage={sendMessage} />
