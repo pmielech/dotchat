@@ -2,28 +2,15 @@ import { Col, Row } from "react-bootstrap";
 import MessageContainter from "./messagecontainer.js"
 import SendMessageForm from "./sendmessage.js";
 
-const ChatRoom = ({ messages, sendMessage }) => <div>
-  <Row className="px-5 py-5">
-    <Col sm={10}>
-      <h2>ChatRoom</h2>
-
-    </Col>
-    <Col>
-
-
-    </Col>
+const ChatRoom = ({ messages, sendMessage, chatname }) => <div>
+  <Row className="py-5">
+    <div className="overflow-auto " style={{ maxHeight: '550px' }} >
+      <MessageContainter messages={messages} />
+    </div>
   </Row>
-  <Row className="px-5 py-5">
-    <Col sm={12} >
-      <>
-        <MessageContainter messages={messages} />
-      </>
-    </Col>
-    <Col sm={12} >
-      <SendMessageForm sendMessage={sendMessage} />
-    </Col>
+  <Row className="pd-5">
+    <SendMessageForm sendMessage={sendMessage} />
   </Row>
-
 </div>
 
 
