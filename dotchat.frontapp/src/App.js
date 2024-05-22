@@ -6,11 +6,15 @@ import Lobby from './components/lobby';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import ChatRoom from './components/chatroom';
 import Message from './models/message.js';
-import getTime from './utilities/utilities.js';
+import getTime from './utilities/utilities';
+import ChatNavbar from './components/chatnavbar';
+
+
 
 
 function App() {
   const [conn, setConnection] = useState();
+  const [context, setContext] = useState();
   const [messages, setMess] = useState([]);
 
   const joinChatRoom = async ({ username, chatname }) => {
@@ -51,20 +55,21 @@ function App() {
     }
   }
   useEffect(() => {
-    console.log(messages);
+    // console.log(messages);
   }, [messages]);
   return (
-    <div >
+    <div className='' style={{ background: "#212121", width: "100%", height: "100vh" }}>
+      <ChatNavbar connStatus={conn} setConStatus={setConnection} />
       <main>
         <Container>
+
           <Row class="px-5 my-5">
-            <Col sm='12'>
-              <h1 className='font-weight-bold'>Welcome to dotchat!</h1>
-            </Col>
+            <div>
+            </div>
           </Row>
           {!conn
             ? <Lobby joinChatRoom={joinChatRoom} />
-            : <ChatRoom messages={messages} sendMessage={sendMessage} ></ChatRoom>
+            : <ChatRoom messages={messages} sendMessage={sendMessage}></ChatRoom>
 
           }
 

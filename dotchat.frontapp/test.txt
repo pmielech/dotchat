@@ -1,0 +1,18 @@
+| Message ID [hex] |  node ID Message | Description
+| ------------- |------------- |-------------|
+| 0x100 |   -                  |  Reset of the microcontroller
+| 0x200 |   0xFF               |  Read ADC value from PA7 pin. (little endian)
+| 0x250 |   0x01/0x00/0xFF     |  Activation of "cyclic message" sent every 250 milliseconds. The message carries information about the ADC value read from the PA7 pin. 
+| 0x300 |   0x00/0xFA/0xFF     |  Set the PWM channel value on the PB7 pin. Value range 0-250. Pulses are triggered at a frequency of 100 Hz.
+| 0x350 |   0x00/0x01/0xFF     |  Set the built-in diode to the selected high/low state.
+| 0x400 |   0xFF               |  Sending a request for a group of frames. It includes messages with IDs 0x200, 0x600 and 0x650.
+| 0x500 |   0xFF               |  Querying the temperature value from the internal stm32 sensor.
+| 0x550 |   0x00/0x01/0xFF     |  Setting the GPIO of the PA6 port to the selected high/low state
+| 0x600 |   0x00-0x03          |  CAN speed setting
+| 0x650 |   0xFF               |  Query of reference voltage value
+
+| Left columns  | Right columns |
+| ------------- |:-------------:|
+| left foo      | right foo     |
+| left bar      | right bar     |
+| left baz      | right baz     |Translated with DeepL.com (free version)

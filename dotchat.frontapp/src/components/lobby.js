@@ -1,31 +1,25 @@
 import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-// import {joinChatRoom} from "../App.js"
-
+import JoinChatForm from "./joinChatForm";
+import connectedImage from "../assets/lobby/connected.svg"
 const Lobby = ({ joinChatRoom }) => {
 
-    const[username, setUsername] = useState();
-    const[chatname, setChatname] = useState();
-    return <Form onSubmit={ e => {
-        e.preventDefault();
-        joinChatRoom({username, chatname});
-    }}>
-        <Row class="px-5" >
-            <Col sm={12}>
-                <Form.Group>
-                    <Form.Control type="text" placeholder="Username" onChange={e => setUsername(e.target.value)} />
-                    <Form.Control type="text" placeholder="Chatname" onChange={e => setChatname(e.target.value)} />
-                </Form.Group>
+  return <div id="lobby_screen" className="container-fluid main_container d-flex h-55">
+    <div className="row w-100 py-5  h-95">
+      <div className="col-lg-6 px-5 h-20 d-flex align-items-center justify-content-center" >
+        <div className="allign-middle border border-4 border-primary px-5 py-5 rounded rounded-5 ">
+          <JoinChatForm joinChatRoom={joinChatRoom}></JoinChatForm>
+        </div>
+      </div>
+      <div className="col-lg-6  h-20 d-flex align-items-center justify-content-center">
+        <img className="allign-middle my-5" src={connectedImage} style={{ height: '75%', width: "75%" }}>
 
 
-            </Col>
-            <Col sm={12}>
-                <hr />
-                <Button variant="success" type="submit">Join the Chat   </Button>
-            </Col>
-        </Row>
+        </img>
+      </div>
+    </div>
 
-    </Form>
+  </div>
 
 }
 
